@@ -2,6 +2,7 @@ $wc = New-Object System.Net.WebClient
 $link = Read-Host "Link eingeben"
 $link -match '\d+'
 $Matches[0]
+
 $Response = (Invoke-RestMethod -URI "https://mangadex.org/api/v2/manga/$($Matches[0])/chapters").data
 
 $chapters = $Response.chapters
