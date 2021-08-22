@@ -29,3 +29,4 @@ for ($i= $chapters.Count-1; $i -gt -1; $i--){
     }
 
 }
+uploads.mangadex.org
