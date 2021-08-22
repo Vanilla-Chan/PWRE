@@ -1,12 +1,11 @@
 $wc = New-Object System.Net.WebClient
 $link = Read-Host "Link eingeben"
-$link -match '\d+'
+$link -match '([^\/]+$)'
 $Matches[0]
-hallod
-$Response = (Invoke-RestMethod -URI "https://mangadex.org/api/v2/manga/$($Matches[0])/chapters").data
-
-$chapters = $Response.chapters
-$chapters = $chapters.Where{$_.language -eq "gb"}
+$Response = (Invoke-RestMethod -URI "https://api.mangadex.org/chapter?manga=$($Matches[0])").results | ConvertTo-Json
+$Response
+#$chapters = $Response.chapters
+#$chapters = $chapters.Where{$_.language -eq "gb"}
 $baseFolder = Get-Location
 New-Item -Path $baseFolder -Name $chapters[0].mangaTitle -ItemType "directory"
 $folder = "$($baseFolder)\$($chapters[0].mangaTitle)"
