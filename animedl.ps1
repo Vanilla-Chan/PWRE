@@ -2,16 +2,21 @@ $wc = New-Object System.Net.WebClient
 $link = Read-Host "Link eingeben"
 $link -match '([^\/]+$)'
 $Matches[0]
-$Response = (Invoke-RestMethod -URI "https://api.mangadex.org/chapter?manga=$($Matches[0])").results | ConvertTo-Json
-$Response
-#$chapters = $Response.chapters
-#$chapters = $chapters.Where{$_.language -eq "gb"}
+$animeInfo = (Invoke-RestMethod -URI "https://api.mangadex.org/chapter?manga=$($Matches[0])&limit=100&translatedLanguage[]=en").results 
+$chapters[0].data.attributes.title
+
+#Folder creation// add check  for new chapters
 $baseFolder = Get-Location
-New-Item -Path $baseFolder -Name $chapters[0].mangaTitle -ItemType "directory"
-$folder = "$($baseFolder)\$($chapters[0].mangaTitle)"
+New-Item -Path $baseFolder -Name $chapters[0].data.attributes.title -ItemType "directory"
+$folder = "$($baseFolder)\$($chapters[0].data.attributes.title)"
+
+$chapters = (Invoke-RestMethod -URI "https://api.mangadex.org/chapter?manga=$($Matches[0])&limit=100&translatedLanguage[]=en").results 
 
 
-for ($i= $chapters.Count-1; $i -gt -1; $i--){
+
+for ($i= $chapters.Lenght; $i -gt -1; $i--){
+    $id =  $Response[$i].data.id
+
     $chapter = $chapters[$i]
     $folder
     $chapter.title
